@@ -1,0 +1,89 @@
+//studentlist.h
+#include <string>
+using namespace std;
+
+class StudentList {
+private:
+    struct Node {
+        int studentID;
+        string name;
+        Node* next;
+    };
+    Node* head;
+
+public:
+    StudentList();
+    ~StudentList();
+
+    void insert(int id, string name);
+    void display() const;
+    void searchByID(int id) const;
+};
+
+//studentlist.cpp
+#include <iostream>
+#include "StudentList.h"
+using namespace std;
+
+StudentList::StudentList() {
+    head = nullptr;
+}
+
+StudentList::~StudentList() {
+    Node* current = head;
+    while (current != nullptr) {
+        Node* temp = current;
+        current = current->next;
+        delete temp;
+    }
+}
+
+void StudentList::insert(int id, string name) {
+    Node* newNode = new Node;
+    newNode->studentID = id;
+    newNode->name = name;
+    newNode->next = head;
+    head = newNode;
+}
+
+void StudentList::display() const {
+    Node* current = head;
+    while (current != nullptr) {
+        cout << "ID: " << current->studentID << ", Name: " << current->name << endl;
+        current = current->next;
+    }
+}
+
+void StudentList::searchByID(int id) const {
+    Node* current = head;
+    while (current != nullptr) {
+        if (current->studentID == id) {
+            cout << "Student found: " << current->name << endl;
+            return;
+        }
+        current = current->next;
+    }
+    cout << "Student with ID " << id << " not found." << endl;
+}
+
+//main.cpp
+#include <iostream>
+#include "StudentList.h"
+using namespace std;
+
+int main() {
+    StudentList list;
+    list.insert(101, "John Doe");
+    list.insert(102, "Jane Smith");
+    list.insert(103, "Sam Brown");
+
+    cout << "Student List:" << endl;
+    list.display();
+
+    cout << "Search for student with ID 102:" << endl;
+    list.searchByID(102);
+
+    return 0;
+}
+
+//END
